@@ -1,5 +1,6 @@
 # -*- mode: dockerfile; coding: utf-8 -*-
 FROM schemers/scheme48:1 AS build
+RUN rm -f /usr/local/bin/scheme-banner
 RUN apt-get update && apt-get -y --no-install-recommends install \
       autoconf build-essential ca-certificates git \
  && rm -rf /var/lib/apt/lists/*
