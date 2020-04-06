@@ -1,22 +1,8 @@
 # -*- mode: dockerfile; coding: utf-8 -*-
-FROM debian:buster-slim AS build
+FROM schemers/scheme48:1 AS build
 RUN apt-get update && apt-get -y --no-install-recommends install \
       autoconf build-essential ca-certificates git \
  && rm -rf /var/lib/apt/lists/*
-
-# Scheme 48
-WORKDIR /build
-COPY checksum checksum
-ADD http://www.s48.org/1.9.2/scheme48-1.9.2.tgz scheme48.tgz
-RUN sha256sum scheme48.tgz && sha256sum -c checksum
-RUN mkdir scheme48 && tar -C scheme48 --strip-components 1 -xf scheme48.tgz
-WORKDIR /build/scheme48
-RUN ./configure
-RUN make
-#RUN make test  # Works, but takes quite a while.
-RUN make install
-
-# scsh (requires Scheme 48)
 WORKDIR /build/scsh
 RUN git init \
  && git remote add origin https://github.com/scheme/scsh.git \
